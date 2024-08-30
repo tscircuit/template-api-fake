@@ -1,15 +1,15 @@
-import { getDbClient } from "lib/db/get-db-client"
-import type { KyselyDatabaseInstance } from "lib/db/kysely-types"
+import type { DbClient } from "lib/db/db-client"
+import { createDatabase } from "lib/db/db-client"
 import type { Middleware } from "winterspec"
 
 export const withDb: Middleware<
   {},
   {
-    db: KyselyDatabaseInstance
+    db: DbClient
   }
 > = async (req, ctx, next) => {
   if (!ctx.db) {
-    ctx.db = await getDbClient()
+    ctx.db = createDatabase()
   }
   return next(req, ctx)
 }

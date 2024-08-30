@@ -7,24 +7,21 @@
     "@types/bun": "latest",
     "@types/react": "18.3.4",
     "next": "^14.2.5",
-    "pgstrap": "1.0.2",
     "redaxios": "^0.5.1"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "pg-connection-from-env": "^1.1.0",
-    "winterspec": "^0.0.86"
+    "winterspec": "^0.0.86",
+    "zod": "^3.23.8",
+    "zustand": "^4.5.5",
+    "zustand-hoist": "^2.0.1"
   },
   "scripts": {
     "start": "bun run dev",
     "dev": "winterspec dev",
     "build": "winterspec bundle -o dist/bundle.js",
-    "next:dev": "next dev",
-    "db:migrate": "pgstrap migrate",
-    "db:reset": "pgstrap reset",
-    "db:generate": "pgstrap generate",
-    "db:create-migration": "pgstrap create-migration"
+    "next:dev": "next dev"
   }
 }

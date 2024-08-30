@@ -6,42 +6,17 @@ import { Request as EdgeRuntimeRequest } from "@edge-runtime/primitives"
 import { join } from "node:path"
 import os from "node:os"
 import type { Middleware } from "winterspec"
-import { getDbClient } from "lib/db/get-db-client"
-import { Client } from "pg"
-import { getConnectionStringFromEnv } from "pg-connection-from-env"
-import { migrate } from "pgstrap"
+import { createDatabase } from "lib/db/db-client"
 
 export const startServer = async ({
   port,
   testDbName,
 }: { port: number; testDbName: string }) => {
-  const client = new Client({
-    connectionString: getConnectionStringFromEnv({
-      database: "postgres",
-    }),
-  })
-  await client.connect()
-
-  await client.query(`CREATE DATABASE ${testDbName}`)
-  await client.end()
-
-  const testDbUrl = getConnectionStringFromEnv({
-    database: testDbName,
-  })
-
-  await migrate({
-    defaultDatabase: testDbName,
-    migrationsDir: join(import.meta.dir, "../../lib/db/migrations"),
-    cwd: process.cwd(),
-    schemas: ["public"],
-  })
-
-  // 3. Create a kysely instance
-  const db = getDbClient(testDbUrl)
-
   const winterspecBundle = await createWinterSpecBundleFromDir(
     join(import.meta.dir, "../../routes"),
   )
+
+  const db = createDatabase()
 
   const middleware: Middleware[] = [
     async (req: any, ctx: any, next: any) => {
