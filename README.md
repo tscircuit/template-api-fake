@@ -2,8 +2,8 @@
 
 This is a template project with best-practice modules:
 - Winterspec for defining the API
-- pgstrap for migrations, generating db types, setting up kysely
-- NextJS deployment
+- bun testing
+- Zustand store with zod definition for database state
 
 ## Running Tests
 
