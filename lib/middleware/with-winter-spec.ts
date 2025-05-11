@@ -1,4 +1,5 @@
 import { createWithWinterSpec } from "winterspec"
+import type { Middleware } from "winterspec/middleware"
 import { withDb } from "./with-db"
 
 export const withRouteSpec = createWithWinterSpec({

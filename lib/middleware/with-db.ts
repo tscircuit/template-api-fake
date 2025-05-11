@@ -1,6 +1,6 @@
 import type { DbClient } from "lib/db/db-client"
 import { createDatabase } from "lib/db/db-client"
-import type { Middleware } from "winterspec"
+import type { Middleware } from "winterspec/middleware"
 
 export const withDb: Middleware<
   {},
