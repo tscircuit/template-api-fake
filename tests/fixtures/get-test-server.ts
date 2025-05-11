@@ -1,13 +1,17 @@
 import { afterEach } from "bun:test"
 import { tmpdir } from "node:os"
-import defaultAxios from "redaxios"
+import ky from "ky"
 import { startServer } from "./start-server"
 
 interface TestFixture {
   url: string
   server: any
-  axios: typeof defaultAxios
+  axios: typeof ky
 }
+export const kyHandler = async (response: Response) => ({
+  status: response.status,
+  data: await response.json()
+})
 
 export const getTestServer = async (): Promise<TestFixture> => {
   const port = 3001 + Math.floor(Math.random() * 999)
@@ -20,8 +24,8 @@ export const getTestServer = async (): Promise<TestFixture> => {
   })
 
   const url = `http://127.0.0.1:${port}`
-  const axios = defaultAxios.create({
-    baseURL: url,
+  const axios = ky.extend({
+    prefixUrl: url,
   })
 
   afterEach(async () => {
