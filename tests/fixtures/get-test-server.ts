@@ -6,12 +6,8 @@ import { startServer } from "./start-server"
 interface TestFixture {
   url: string
   server: any
-  axios: typeof ky
+  ky: typeof ky
 }
-export const kyHandler = async (response: Response) => ({
-  status: response.status,
-  data: await response.json()
-})
 
 export const getTestServer = async (): Promise<TestFixture> => {
   const port = 3001 + Math.floor(Math.random() * 999)
@@ -24,7 +20,7 @@ export const getTestServer = async (): Promise<TestFixture> => {
   })
 
   const url = `http://127.0.0.1:${port}`
-  const axios = ky.extend({
+  const kyInstance = ky.extend({
     prefixUrl: url,
   })
 
@@ -36,6 +32,11 @@ export const getTestServer = async (): Promise<TestFixture> => {
   return {
     url,
     server,
-    axios,
+    ky: kyInstance,
   }
 }
+
+export const kyHandler = async (response: Response) => ({
+  status: response.status,
+  data: await response.json(),
+})
