@@ -2,14 +2,18 @@ import { getTestServer } from "tests/fixtures/get-test-server"
 import { test, expect } from "bun:test"
 
 test("create a thing", async () => {
-  const { axios } = await getTestServer()
+  const { ky } = await getTestServer()
 
-  axios.post("/things/create", {
-    name: "Thing1",
-    description: "Thing1 Description",
+  ky.post("/things/create", {
+    json: {
+      name: "Thing1",
+      description: "Thing1 Description",
+    },
   })
 
-  const { data } = await axios.get("/things/list")
+  const data = await ky
+    .get("/things/list")
+    .json<{ things: { name: string; description: string }[] }>()
 
   expect(data.things).toHaveLength(1)
 })
