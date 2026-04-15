@@ -177,3 +177,11 @@ dist
 .vscode
 .winterspec
 .aider*
+
+# bounty-hunter pipeline artifacts
+.cheetahclaws/
+BOUNTY_*.md
+*.analysis.md
+submit_pr.py
+fix_pr.py
+record_demo.py
