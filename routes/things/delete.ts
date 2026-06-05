@@ -1,6 +1,5 @@
 import { withRouteSpec } from "lib/middleware/with-winter-spec"
 import { z } from "zod"
-import type { DatabaseSchema } from "lib/db/schema"
 
 export default withRouteSpec({
   methods: ["POST"],
