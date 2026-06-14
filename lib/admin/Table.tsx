@@ -45,7 +45,9 @@ const Cell = ({
         {cellValue.map((id: string, index: number) => (
           <a
             key={index}
-            href={`/admin/${removeResourcePrefixes(resource)}/get?${removeResourcePrefixes(columnKey.slice(0, -1))}=${id}`}
+            href={`/admin/${removeResourcePrefixes(
+              resource,
+            )}/get?${removeResourcePrefixes(columnKey.slice(0, -1))}=${id}`}
             className="text-blue-500 hover:underline"
           >
             {id?.split("-")?.[0]}...
@@ -60,7 +62,9 @@ const Cell = ({
     const resource = pluralize(columnKey.slice(0, -3)) // e.g., "account_id" -> "accounts"
     return (
       <a
-        href={`/admin/${removeResourcePrefixes(pluralize(resource))}/get?${removeResourcePrefixes(columnKey)}=${cellValue}`}
+        href={`/admin/${removeResourcePrefixes(
+          pluralize(resource),
+        )}/get?${removeResourcePrefixes(columnKey)}=${cellValue}`}
       >
         {cellValue?.split("-")?.[0]}
       </a>
@@ -98,7 +102,9 @@ const Cell = ({
       contentType = "application/json"
     } else if (typeof cellValue === "string") {
       b64 = Buffer.from(cellValue).toString("base64")
-      filename = `${columnKey.split("_").slice(0, -1).join("_")}.${columnKey.split("_").pop()}`
+      filename = `${columnKey.split("_").slice(0, -1).join("_")}.${columnKey
+        .split("_")
+        .pop()}`
       contentType = "application/octet-stream"
     } else {
       throw new Error(`Unknown cell value type: ${typeof cellValue}`)

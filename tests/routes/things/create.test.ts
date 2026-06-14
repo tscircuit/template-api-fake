@@ -4,12 +4,14 @@ import { test, expect } from "bun:test"
 test("create a thing", async () => {
   const { ky } = await getTestServer()
 
-  const createRes = await ky.post("things/create", {
-    json: {
-      name: "Thing1",
-      description: "Thing1 Description",
-    },
-  }).json<{ ok: boolean }>()
+  const createRes = await ky
+    .post("things/create", {
+      json: {
+        name: "Thing1",
+        description: "Thing1 Description",
+      },
+    })
+    .json<{ ok: boolean }>()
 
   expect(createRes.ok).toBe(true)
 

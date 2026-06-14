@@ -51,7 +51,9 @@ button {
                       <span key={index}>
                         <span className="px-0.5 text-gray-500">/</span>
                         <a
-                          href={`/${pathComponents.slice(0, index + 1).join("/")}`}
+                          href={`/${pathComponents
+                            .slice(0, index + 1)
+                            .join("/")}`}
                         >
                           {component}
                         </a>
@@ -74,7 +76,9 @@ button {
                     onchange="document.cookie = 'timezone=' + this.value + ';path=/'; location.reload();"
                   >
                     <option ${timezone === "UTC" ? "selected" : ""} value="UTC">UTC</option>
-                    <option ${timezone === "America/Los_Angeles" ? "selected" : ""} value="America/Los_Angeles">Pacific</option>
+                    <option ${
+                      timezone === "America/Los_Angeles" ? "selected" : ""
+                    } value="America/Los_Angeles">Pacific</option>
                     <option ${timezone === "Asia/Kolkata" ? "selected" : ""} value="Asia/Kolkata">IST</option>
                   </select>
                   `,

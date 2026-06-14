@@ -5,12 +5,14 @@ test("delete a thing", async () => {
   const { ky } = await getTestServer()
 
   // Create a thing first
-  const createRes = await ky.post("things/create", {
-    json: {
-      name: "ThingToDelete",
-      description: "Will be deleted",
-    },
-  }).json<{ ok: boolean }>()
+  const createRes = await ky
+    .post("things/create", {
+      json: {
+        name: "ThingToDelete",
+        description: "Will be deleted",
+      },
+    })
+    .json<{ ok: boolean }>()
 
   expect(createRes.ok).toBe(true)
 
@@ -23,12 +25,14 @@ test("delete a thing", async () => {
   const thingId = listBefore.things[0].thing_id
 
   // Delete the thing using URL-encoded form data
-  const deleteRes = await ky.post("things/delete", {
-    body: new URLSearchParams({ thing_id: thingId }),
-    headers: {
-      "content-type": "application/x-www-form-urlencoded",
-    },
-  }).json<{ ok: boolean }>()
+  const deleteRes = await ky
+    .post("things/delete", {
+      body: new URLSearchParams({ thing_id: thingId }),
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+      },
+    })
+    .json<{ ok: boolean }>()
 
   expect(deleteRes.ok).toBe(true)
 
