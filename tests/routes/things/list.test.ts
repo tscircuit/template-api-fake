@@ -1,12 +1,12 @@
+import { expect, test } from "bun:test"
 import { getTestServer } from "tests/fixtures/get-test-server"
-import { test, expect } from "bun:test"
 
 test("list returns empty array on fresh server", async () => {
   const { ky } = await getTestServer()
 
-  const data = await ky
-    .get("things/list")
-    .json<{ things: { thing_id: string; name: string; description: string }[] }>()
+  const data = await ky.get("things/list").json<{
+    things: { thing_id: string; name: string; description: string }[]
+  }>()
 
   expect(data.things).toEqual([])
 })
@@ -20,9 +20,9 @@ test("list returns all required fields for each thing", async () => {
     })
     .json<{ ok: boolean }>()
 
-  const data = await ky
-    .get("things/list")
-    .json<{ things: { thing_id: string; name: string; description: string }[] }>()
+  const data = await ky.get("things/list").json<{
+    things: { thing_id: string; name: string; description: string }[]
+  }>()
 
   expect(data.things).toHaveLength(1)
   const t = data.things[0]
@@ -42,9 +42,9 @@ test("list preserves insertion order", async () => {
       .json<{ ok: boolean }>()
   }
 
-  const data = await ky
-    .get("things/list")
-    .json<{ things: { name: string }[] }>()
+  const data = await ky.get("things/list").json<{
+    things: { name: string }[]
+  }>()
 
   expect(data.things.map((t) => t.name)).toEqual(names)
 })
@@ -58,9 +58,9 @@ test("list reflects create and delete in sequence", async () => {
       .json<{ ok: boolean }>()
   }
 
-  const listed = await ky
-    .get("things/list")
-    .json<{ things: { thing_id: string; name: string }[] }>()
+  const listed = await ky.get("things/list").json<{
+    things: { thing_id: string; name: string }[]
+  }>()
   const bId = listed.things.find((t) => t.name === "B")!.thing_id
   await ky
     .post("things/delete", {
@@ -68,8 +68,8 @@ test("list reflects create and delete in sequence", async () => {
     })
     .json<{ ok: boolean }>()
 
-  const final = await ky
-    .get("things/list")
-    .json<{ things: { name: string }[] }>()
+  const final = await ky.get("things/list").json<{
+    things: { name: string }[]
+  }>()
   expect(final.things.map((t) => t.name)).toEqual(["A", "C"])
 })

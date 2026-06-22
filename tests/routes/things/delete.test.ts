@@ -1,5 +1,5 @@
+import { expect, test } from "bun:test"
 import { getTestServer } from "tests/fixtures/get-test-server"
-import { test, expect } from "bun:test"
 
 test("delete removes a thing by thing_id", async () => {
   const { ky } = await getTestServer()
@@ -16,9 +16,9 @@ test("delete removes a thing by thing_id", async () => {
     })
     .json<{ ok: boolean }>()
 
-  const before = await ky
-    .get("things/list")
-    .json<{ things: { thing_id: string; name: string }[] }>()
+  const before = await ky.get("things/list").json<{
+    things: { thing_id: string; name: string }[]
+  }>()
   expect(before.things).toHaveLength(2)
 
   const targetId = before.things.find((t) => t.name === "ToDelete")!.thing_id
@@ -29,9 +29,9 @@ test("delete removes a thing by thing_id", async () => {
     .json<{ ok: boolean }>()
   expect(delRes).toEqual({ ok: true })
 
-  const after = await ky
-    .get("things/list")
-    .json<{ things: { name: string }[] }>()
+  const after = await ky.get("things/list").json<{
+    things: { name: string }[]
+  }>()
   expect(after.things).toHaveLength(1)
   expect(after.things[0].name).toBe("ToKeep")
 })
@@ -52,9 +52,9 @@ test("delete is idempotent for non-existent thing_id", async () => {
     .json<{ ok: boolean }>()
   expect(res).toEqual({ ok: true })
 
-  const after = await ky
-    .get("things/list")
-    .json<{ things: { name: string }[] }>()
+  const after = await ky.get("things/list").json<{
+    things: { name: string }[]
+  }>()
   expect(after.things).toHaveLength(1)
   expect(after.things[0].name).toBe("OnlyOne")
 })
@@ -67,9 +67,9 @@ test("create after delete gets a new incrementing thing_id", async () => {
     .json<{ ok: boolean }>()
   expect(c1).toEqual({ ok: true })
 
-  const l1 = await ky
-    .get("things/list")
-    .json<{ things: { thing_id: string }[] }>()
+  const l1 = await ky.get("things/list").json<{
+    things: { thing_id: string }[]
+  }>()
   const deletedId = l1.things[0].thing_id
 
   await ky
@@ -83,9 +83,9 @@ test("create after delete gets a new incrementing thing_id", async () => {
     .json<{ ok: boolean }>()
   expect(c2).toEqual({ ok: true })
 
-  const l2 = await ky
-    .get("things/list")
-    .json<{ things: { thing_id: string }[] }>()
+  const l2 = await ky.get("things/list").json<{
+    things: { thing_id: string }[]
+  }>()
   expect(l2.things).toHaveLength(1)
   expect(l2.things[0].thing_id).not.toBe(deletedId)
 })

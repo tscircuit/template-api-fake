@@ -1,5 +1,5 @@
+import { expect, test } from "bun:test"
 import { getTestServer } from "tests/fixtures/get-test-server"
-import { test, expect } from "bun:test"
 
 test("create a thing persists and returns ok", async () => {
   const { ky } = await getTestServer()
@@ -15,9 +15,9 @@ test("create a thing persists and returns ok", async () => {
   const body = await res.json<{ ok: boolean }>()
   expect(body).toEqual({ ok: true })
 
-  const data = await ky
-    .get("things/list")
-    .json<{ things: { thing_id: string; name: string; description: string }[] }>()
+  const data = await ky.get("things/list").json<{
+    things: { thing_id: string; name: string; description: string }[]
+  }>()
 
   expect(data.things).toHaveLength(1)
   expect(data.things[0].name).toBe("Thing1")
@@ -37,9 +37,9 @@ test("create assigns incrementing thing_ids", async () => {
     expect(res).toEqual({ ok: true })
   }
 
-  const data = await ky
-    .get("things/list")
-    .json<{ things: { thing_id: string; name: string }[] }>()
+  const data = await ky.get("things/list").json<{
+    things: { thing_id: string; name: string }[]
+  }>()
 
   expect(data.things).toHaveLength(3)
   expect(data.things.map((t) => t.name)).toEqual(names)
@@ -55,9 +55,10 @@ test("create accepts empty string fields", async () => {
     .json<{ ok: boolean }>()
   expect(res).toEqual({ ok: true })
 
-  const data = await ky
-    .get("things/list")
-    .json<{ things: { name: string; description: string }[] }>()
+  const data = await ky.get("things/list").json<{
+    things: { name: string; description: string }[]
+  }>()
+
   expect(data.things).toHaveLength(1)
   expect(data.things[0].name).toBe("")
   expect(data.things[0].description).toBe("")
