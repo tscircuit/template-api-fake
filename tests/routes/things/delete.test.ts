@@ -13,11 +13,9 @@ test("delete a thing by id and ignore missing ids", async () => {
     })
     .json<{ ok: boolean }>()
 
-  const beforeDelete = await ky
-    .get("things/list")
-    .json<{
-      things: { thing_id: string; name: string; description: string }[]
-    }>()
+  const beforeDelete = await ky.get("things/list").json<{
+    things: { thing_id: string; name: string; description: string }[]
+  }>()
 
   expect(beforeDelete.things).toHaveLength(1)
 

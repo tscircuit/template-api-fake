@@ -29,11 +29,9 @@ test("list starts empty and returns created things in insertion order", async ()
     expect(createData).toEqual({ ok: true })
   }
 
-  const data = await ky
-    .get("things/list")
-    .json<{
-      things: { thing_id: string; name: string; description: string }[]
-    }>()
+  const data = await ky.get("things/list").json<{
+    things: { thing_id: string; name: string; description: string }[]
+  }>()
 
   expect(data.things).toEqual([
     {
