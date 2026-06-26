@@ -17,7 +17,13 @@ test("create a thing", async () => {
 
   const data = await ky
     .get("things/list")
-    .json<{ things: { name: string; description: string }[] }>()
+    .json<{ things: { thing_id: string; name: string; description: string }[] }>()
 
-  expect(data.things).toHaveLength(1)
+  expect(data.things).toEqual([
+    {
+      thing_id: "0",
+      name: "Thing1",
+      description: "Thing1 Description",
+    },
+  ])
 })

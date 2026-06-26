@@ -40,3 +40,34 @@ test("delete a thing", async () => {
 
   expect(listAfter.things).toHaveLength(0)
 })
+
+test("delete is a no-op for unknown thing ids", async () => {
+  const { ky } = await getTestServer()
+
+  await ky.post("things/create", {
+    json: {
+      name: "Thing1",
+      description: "Thing1 Description",
+    },
+  })
+
+  const deleteResponse = await ky
+    .post("things/delete", {
+      body: new URLSearchParams({ thing_id: "missing" }),
+    })
+    .json<{ ok: boolean }>()
+
+  expect(deleteResponse).toEqual({ ok: true })
+
+  const data = await ky.get("things/list").json<{
+    things: { thing_id: string; name: string; description: string }[]
+  }>()
+
+  expect(data.things).toEqual([
+    {
+      thing_id: "0",
+      name: "Thing1",
+      description: "Thing1 Description",
+    },
+  ])
+})
