@@ -15,11 +15,9 @@ test("create a thing", async () => {
 
   expect(res.ok).toBe(true)
 
-  const data = await ky
-    .get("things/list")
-    .json<{
-      things: { thing_id: string; name: string; description: string }[]
-    }>()
+  const data = await ky.get("things/list").json<{
+    things: { thing_id: string; name: string; description: string }[]
+  }>()
 
   expect(data.things).toEqual([
     {
