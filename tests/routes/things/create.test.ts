@@ -10,7 +10,7 @@ test("create a thing", async () => {
       description: "Thing1 Description",
     },
   })
-  
+
   expect(response.status).toBe(200)
   const createData = await response.json<{ ok: boolean }>()
   expect(createData.ok).toBe(true)
