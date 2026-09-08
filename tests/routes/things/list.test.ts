@@ -4,11 +4,9 @@ import { test, expect } from "bun:test"
 test("list returns an empty list when nothing has been created", async () => {
   const { ky } = await getTestServer()
 
-  const data = await ky
-    .get("things/list")
-    .json<{
-      things: { thing_id: string; name: string; description: string }[]
-    }>()
+  const data = await ky.get("things/list").json<{
+    things: { thing_id: string; name: string; description: string }[]
+  }>()
 
   expect(data.things).toEqual([])
 })
@@ -35,11 +33,9 @@ test("list returns all created things with their fields", async () => {
     },
   })
 
-  const data = await ky
-    .get("things/list")
-    .json<{
-      things: { thing_id: string; name: string; description: string }[]
-    }>()
+  const data = await ky.get("things/list").json<{
+    things: { thing_id: string; name: string; description: string }[]
+  }>()
 
   expect(data.things).toHaveLength(3)
   expect(data.things.map((t) => t.name)).toEqual(["Thing1", "Thing2", "Thing3"])
@@ -48,6 +44,8 @@ test("list returns all created things with their fields", async () => {
     "Thing2 Description",
     "Thing3 Description",
   ])
+  const thingIds = data.things.map((t) => t.thing_id)
+  expect(new Set(thingIds).size).toBe(3)
   for (const thing of data.things) {
     expect(typeof thing.thing_id).toBe("string")
     expect(thing.thing_id.length).toBeGreaterThan(0)

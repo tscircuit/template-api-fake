@@ -29,7 +29,7 @@ test("delete an existing thing removes it from the list", async () => {
       thing_id: toDelete.thing_id,
     }),
   })
-  expect(await deleteRes.json()).toEqual({ ok: true })
+  expect(await deleteRes.json<{ ok: boolean }>()).toEqual({ ok: true })
 
   const data = await ky
     .get("things/list")
@@ -83,7 +83,7 @@ test("deleting a non-existent thing_id still succeeds without changing the list"
   const deleteRes = await ky.post("things/delete", {
     body: new URLSearchParams({ thing_id: "non-existent-thing-id" }),
   })
-  expect(await deleteRes.json()).toEqual({ ok: true })
+  expect(await deleteRes.json<{ ok: boolean }>()).toEqual({ ok: true })
 
   const data = await ky
     .get("things/list")
@@ -110,12 +110,12 @@ test("the same thing can be deleted twice without error (idempotent)", async () 
   const firstDelete = await ky.post("things/delete", {
     body: new URLSearchParams({ thing_id: things[0].thing_id }),
   })
-  expect(await firstDelete.json()).toEqual({ ok: true })
+  expect(await firstDelete.json<{ ok: boolean }>()).toEqual({ ok: true })
 
   const secondDelete = await ky.post("things/delete", {
     body: new URLSearchParams({ thing_id: things[0].thing_id }),
   })
-  expect(await secondDelete.json()).toEqual({ ok: true })
+  expect(await secondDelete.json<{ ok: boolean }>()).toEqual({ ok: true })
 
   const data = await ky.get("things/list").json<{ things: unknown[] }>()
 
