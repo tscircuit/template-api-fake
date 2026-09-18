@@ -1,12 +1,11 @@
 import { afterEach } from "bun:test"
-import { tmpdir } from "node:os"
-import ky from "ky"
+import ky, { type KyInstance } from "ky"
 import { startServer } from "./start-server"
 
 interface TestFixture {
   url: string
   server: any
-  ky: typeof ky
+  ky: KyInstance
 }
 
 export const getTestServer = async (): Promise<TestFixture> => {
