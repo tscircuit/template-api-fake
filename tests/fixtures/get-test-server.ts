@@ -1,22 +1,20 @@
 import { afterEach } from "bun:test"
 import { tmpdir } from "node:os"
-import ky from "ky"
+import ky, { type KyInstance } from "ky"
 import { startServer } from "./start-server"
 
 interface TestFixture {
   url: string
   server: any
-  ky: typeof ky
+  ky: KyInstance
 }
 
 export const getTestServer = async (): Promise<TestFixture> => {
-  const port = 3001 + Math.floor(Math.random() * 999)
-  const testInstanceId = Math.random().toString(36).substring(2, 15)
-  const testDbName = `testdb${testInstanceId}`
+  const port = 3000 + Math.floor(Math.random() * 60000)
 
   const server = await startServer({
     port,
-    testDbName,
+    testDbPath: `${tmpdir()}/test-${port}.sqlite`,
   })
 
   const url = `http://127.0.0.1:${port}`
@@ -25,8 +23,9 @@ export const getTestServer = async (): Promise<TestFixture> => {
   })
 
   afterEach(async () => {
-    await server.stop()
-    // Here you might want to add logic to drop the test database
+    if (server?.stop) {
+      await server.stop()
+    }
   })
 
   return {
